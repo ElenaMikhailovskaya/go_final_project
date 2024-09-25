@@ -3,25 +3,32 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/ElenaMikhailovskaya/go_final_project/internal/models"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func calculateNextDate(now time.Time, date string, repeat string) (string, error) {
-	var nextDate string
+func NextDate(now time.Time, date string, repeat string) ([]string, error) {
+	var nextDate []string
 	var nextTime time.Time
 
 	var rulesDays map[string]map[int]struct{}
 	rulesDays = make(map[string]map[int]struct{})
 
+	rulesDays["week"] = make(map[int]struct{}, 7)
 	for i := 1; i <= 7; i++ {
-		//rulesDays["week"] = make(map[int]struct{})
 		rulesDays["week"][i] = struct{}{}
 	}
+
+	rulesDays["months"] = make(map[int]struct{}, 12)
 	for i := 1; i <= 12; i++ {
-		//rulesDays["months"] = make(map[int]struct{})
 		rulesDays["months"][i] = struct{}{}
+	}
+
+	rulesDays["days"] = make(map[int]struct{}, 31)
+	for i := 1; i <= 31; i++ {
+		rulesDays["days"][i] = struct{}{}
 	}
 
 	if repeat == "" {
@@ -52,22 +59,41 @@ func calculateNextDate(now time.Time, date string, repeat string) (string, error
 			}
 			nextTime = dateTime.AddDate(1, 0, days)
 		}
-		nextDate = nextTime.String()
+		nextDate = append(nextDate, nextTime.String())
 		return nextDate, nil
 	case "w":
 		if repeatSlice[1] == "" {
 			return nextDate, errors.New("Days is empty")
 		}
-		weekDay, err := strconv.Atoi(repeatSlice[1])
-		if err != nil {
-			return nextDate, fmt.Errorf("Weekday format error %s ", repeatSlice[1])
+		days := strings.Split(repeatSlice[1], ",")
+		if len(days) > 0 {
+			for _, d := range days {
+				weekDay, err := strconv.Atoi(d)
+				if err != nil {
+					return nextDate, fmt.Errorf("Weekday format error %s ", d)
+				}
+				_, ok := rulesDays["week"][weekDay]
+				if !ok {
+					return nextDate, fmt.Errorf("Weekday format error %s ", d)
+				}
+				curWD := int(dateTime.Weekday())
+				var dd int
+				if curWD > weekDay {
+					dd = 7 - curWD + weekDay
+				} else {
+					dd = weekDay - curWD
+				}
+				var next time.Time
+				for i := 1; i <= dd; i++ {
+					next = dateTime.AddDate(1, 0, i)
+					if next.After(now) {
+						nextDate = append(nextDate, next.Format(models.DateFormat))
+					}
+				}
+			}
 		}
-		wd, ok := rulesDays["week"][weekDay]
-		if !ok {
-			return nextDate, fmt.Errorf("Weekday format error %s ", repeatSlice[1])
-		}
-
 	case "m":
+		return nextDate, fmt.Errorf("Unprocessable operation")
 	default:
 		return nextDate, fmt.Errorf("Unprocessable symbol %s ", repeatSlice[0])
 	}

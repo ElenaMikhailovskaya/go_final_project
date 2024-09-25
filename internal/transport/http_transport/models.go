@@ -1,6 +1,7 @@
 package http_transport
 
 import (
+	"github.com/ElenaMikhailovskaya/go_final_project/internal/models"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +17,7 @@ type Server struct {
 }
 
 type taskInterfaceMethods interface {
-	AddTask()
+	AddTask(task models.TaskRequest) ([]int, error)
 	UpdateTask()
 	DeleteTask()
 	GetTaskList()
