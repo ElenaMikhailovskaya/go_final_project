@@ -131,5 +131,4 @@ func (s *Server) NextDate(now string, date string, repeat string) (string, error
 		return nextDate, fmt.Errorf("Unprocessable symbol %s ", repeatSlice[0])
 	}
 
-	return nextDate, nil
 }
