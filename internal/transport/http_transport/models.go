@@ -17,11 +17,14 @@ type Server struct {
 }
 
 type taskInterfaceMethods interface {
-	AddTask(task models.TaskRequest) ([]int, error)
-	UpdateTask()
-	DeleteTask()
-	GetTaskList()
-	GetTask()
+	AddTask(task models.TaskRequest) (int, error)
+	UpdateTask(req models.TaskUpdateRequest) error
+	DeleteTask(id string) error
+	GetTaskList() (models.TasksGetResponse, error)
+	DoneTask(id string) error
+	NextDate(now string, date string, repeat string) (string, error)
+	GetById(id string) (models.Task, error)
+	Search(query string) (models.TasksGetResponse, error)
 }
 
 type Cfg struct {

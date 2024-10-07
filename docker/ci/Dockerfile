@@ -1,10 +1,13 @@
-FROM golang:1.21.0
+FROM ubuntu:latest
+
+RUN apt update && apt install golang -y ca-certificates && update-ca-certificates
 
 WORKDIR /build
 COPY go.mod ./
 COPY go.sum ./
 COPY ./cmd/ ./cmd/
 COPY ./internal/ ./internal/
+COPY ./web/ ./web/
 
 RUN go mod download
 

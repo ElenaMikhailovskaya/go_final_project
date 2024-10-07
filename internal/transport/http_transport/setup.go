@@ -34,14 +34,15 @@ func New(service taskInterfaceMethods) (*Server, error) {
 func (s *Server) SetupHandlers() *Server {
 	v1 := s.a.Group(models.ApiPath)
 
-	frontPath := "/"
-	s.a.Static(frontPath, "web")                       // фронт
+	s.a.Static(webDir, "web")                          // фронт
 	v1.Get(models.ApiPathPing, s.pingHandler)          // пинг приложения
 	v1.Get(models.ApiPathTasks, s.tasksListHandler)    // Получение списка задач
 	v1.Post(models.ApiPathTask, s.taskCreateHandler)   // Добавление задачи
+	v1.Post(models.ApiTaskDone, s.taskDoneHandler)     // Выполнение задачи
 	v1.Get(models.ApiPathTask, s.taskGetHandler)       // Получение задачи
 	v1.Put(models.ApiPathTask, s.taskUpdateHandler)    // Изменение задачи
 	v1.Delete(models.ApiPathTask, s.taskDeleteHandler) // Удаление задачи
+	v1.Get(models.ApiNextDate, s.nextDateHandler)      // След дата
 
 	return s
 }
