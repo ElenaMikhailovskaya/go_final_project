@@ -22,7 +22,7 @@ type taskInterfaceMethods interface {
 	DeleteTask(id string) error
 	GetTaskList() (models.TasksGetResponse, error)
 	DoneTask(id string) error
-	NextDate(now string, date string, repeat string) (string, error)
+	NextDate(now string, date string, repeat string, done bool) (string, error)
 	GetById(id string) (models.Task, error)
 	Search(query string) (models.TasksGetResponse, error)
 }

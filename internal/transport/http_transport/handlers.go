@@ -228,7 +228,7 @@ func (s *Server) nextDateHandler(c *fiber.Ctx) error {
 	date := c.Query("date")
 	repeat := c.Query("repeat")
 
-	nextDate, err := s.service.NextDate(now, date, repeat)
+	nextDate, err := s.service.NextDate(now, date, repeat, false)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).JSON(models.ErrorResult{
 			Error: err.Error(),

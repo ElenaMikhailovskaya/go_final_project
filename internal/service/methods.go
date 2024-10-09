@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (s *Server) NextDate(now string, date string, repeat string) (string, error) {
+func (s *Server) NextDate(now string, date string, repeat string, done bool) (string, error) {
 	var nextDate string
 	var nextTime time.Time
 
@@ -70,7 +70,7 @@ func (s *Server) NextDate(now string, date string, repeat string) (string, error
 			return nextDate, errors.New("Days is empty")
 		} else {
 			days, err := strconv.Atoi(repeatSlice[1])
-			if dateTime.Format(models.DateFormat) == time.Now().Format(models.DateFormat) {
+			if dateTime.Format(models.DateFormat) == time.Now().Format(models.DateFormat) && !done {
 				nextTime = dateTime
 			} else {
 				if err != nil {
