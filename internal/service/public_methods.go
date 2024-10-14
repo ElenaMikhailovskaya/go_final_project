@@ -40,7 +40,7 @@ func (s *Server) AddTask(task models.TaskRequest) (int, error) {
 	return newTaskId, nil
 }
 
-func (s *Server) UpdateTask(req models.TaskUpdateRequest) error {
+func (s *Server) UpdateTask(req models.TaskUpdateRequest, done bool) error {
 	var nextDate string
 
 	_, err := time.Parse(models.DateFormat, req.Date)
@@ -58,7 +58,7 @@ func (s *Server) UpdateTask(req models.TaskUpdateRequest) error {
 		nextDate = time.Now().Format(models.DateFormat)
 	} else {
 		now := time.Now().Format(models.DateFormat)
-		nextDate, err = s.NextDate(now, req.Date, req.Repeat, true)
+		nextDate, err = s.NextDate(now, req.Date, req.Repeat, done)
 		if err != nil {
 			return err
 		}
@@ -91,15 +91,15 @@ func (s *Server) DoneTask(id string) error {
 			return err
 		}
 	} else {
-		now := time.Now().Format(models.DateFormat)
+		//now := time.Now().Format(models.DateFormat)
 		taskUpdate := models.TaskUpdateRequest{
 			Id:      id,
-			Date:    now,
+			Date:    task.Date,
 			Title:   task.Title,
 			Comment: task.Comment,
 			Repeat:  task.Repeat,
 		}
-		err = s.UpdateTask(taskUpdate)
+		err = s.UpdateTask(taskUpdate, true)
 		if err != nil {
 			return err
 		}

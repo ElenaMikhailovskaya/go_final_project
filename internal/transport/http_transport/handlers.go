@@ -175,7 +175,7 @@ func (s *Server) taskUpdateHandler(c *fiber.Ctx) error {
 	}
 
 	// вызываем метод логики
-	err = s.service.UpdateTask(req)
+	err = s.service.UpdateTask(req, false)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
 			Error: err.Error(),

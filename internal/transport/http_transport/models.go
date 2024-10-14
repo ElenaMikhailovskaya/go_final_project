@@ -18,7 +18,7 @@ type Server struct {
 
 type taskInterfaceMethods interface {
 	AddTask(task models.TaskRequest) (int, error)
-	UpdateTask(req models.TaskUpdateRequest) error
+	UpdateTask(req models.TaskUpdateRequest, done bool) error
 	DeleteTask(id string) error
 	GetTaskList() (models.TasksGetResponse, error)
 	DoneTask(id string) error

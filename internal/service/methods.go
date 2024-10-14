@@ -70,7 +70,7 @@ func (s *Server) NextDate(now string, date string, repeat string, done bool) (st
 			return nextDate, errors.New("Days is empty")
 		} else {
 			days, err := strconv.Atoi(repeatSlice[1])
-			if dateTime.Format(models.DateFormat) == time.Now().Format(models.DateFormat) && !done {
+			if dateTime.Format(models.DateFormat) == nowTime.Format(models.DateFormat) && !done {
 				nextTime = dateTime
 			} else {
 				if err != nil {
