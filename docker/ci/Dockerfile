@@ -1,6 +1,4 @@
-FROM ubuntu:latest
-
-RUN apt update && apt install golang -y ca-certificates && update-ca-certificates
+FROM golang:alpine
 
 WORKDIR /build
 COPY go.mod ./
@@ -12,3 +10,5 @@ COPY ./web/ ./web/
 RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app ./cmd/app
+
+CMD ["./cmd/app"]

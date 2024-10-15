@@ -32,10 +32,13 @@ func (s *Server) AddTask(task models.TaskRequest) (int, error) {
 		now := time.Now().Format(models.DateFormat)
 		nextDate, err = s.NextDate(now, date, task.Repeat, false)
 		if err != nil {
-			return 0, err
+			return 0, fmt.Errorf("error in NextDate: %w", err)
 		}
 	}
 	newTaskId, err = s.DBase.Add(task, nextDate)
+	if err != nil {
+		return 0, fmt.Errorf("error in DB Add: %w", err)
+	}
 
 	return newTaskId, nil
 }
@@ -60,11 +63,14 @@ func (s *Server) UpdateTask(req models.TaskUpdateRequest, done bool) error {
 		now := time.Now().Format(models.DateFormat)
 		nextDate, err = s.NextDate(now, req.Date, req.Repeat, done)
 		if err != nil {
-			return err
+			return fmt.Errorf("error in NextDate: %w", err)
 		}
 	}
 	req.Date = nextDate
 	err = s.DBase.Update(req)
+	if err != nil {
+		return fmt.Errorf("error in DB Update: %w", err)
+	}
 
 	return nil
 }
@@ -76,6 +82,9 @@ func (s *Server) DeleteTask(id string) error {
 	}
 
 	err = s.DBase.Delete(id)
+	if err != nil {
+		return fmt.Errorf("error in DB Delete: %w", err)
+	}
 
 	return nil
 }
@@ -88,7 +97,7 @@ func (s *Server) DoneTask(id string) error {
 	if task.Repeat == "" {
 		err = s.DeleteTask(id)
 		if err != nil {
-			return err
+			return fmt.Errorf("error in DB Delete: %w", err)
 		}
 	} else {
 		//now := time.Now().Format(models.DateFormat)
@@ -101,7 +110,7 @@ func (s *Server) DoneTask(id string) error {
 		}
 		err = s.UpdateTask(taskUpdate, true)
 		if err != nil {
-			return err
+			return fmt.Errorf("error in UpdateTask: %w", err)
 		}
 	}
 	return nil
@@ -111,7 +120,7 @@ func (s *Server) GetTaskList() (models.TasksGetResponse, error) {
 	tasks := models.TasksGetResponse{}
 	tasks, err := s.DBase.GetList()
 	if err != nil {
-		return tasks, err
+		return tasks, fmt.Errorf("error in DB GetList: %w", err)
 	}
 	if len(tasks.Tasks) == 0 {
 		tasks.Tasks = []models.Task{}
@@ -131,7 +140,7 @@ func (s *Server) Search(query string) (models.TasksGetResponse, error) {
 	}
 	tasks, err = s.DBase.Search(search)
 	if err != nil {
-		return tasks, err
+		return tasks, fmt.Errorf("error in DB Search: %w", err)
 	}
 	return tasks, nil
 }
@@ -140,7 +149,7 @@ func (s *Server) GetById(id string) (models.Task, error) {
 	task := models.Task{}
 	task, err := s.DBase.GetById(id)
 	if err != nil {
-		return task, err
+		return task, fmt.Errorf("error in DB GetById: %w", err)
 	}
 	if task.Id == "" {
 		return task, fmt.Errorf("Task with id=%s not found", id)

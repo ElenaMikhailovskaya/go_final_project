@@ -19,11 +19,13 @@ func Start() {
 	logic, err := service.New(service.WithDatabase(db))
 	if err != nil {
 		fmt.Println("Service error", err)
+		panic(err)
 	}
 
 	transport, err := http_transport.New(logic)
 	if err != nil {
 		fmt.Println("Transport error", err)
+		panic(err)
 	}
 
 	err = transport.Listen()

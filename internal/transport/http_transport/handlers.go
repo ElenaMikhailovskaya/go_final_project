@@ -37,7 +37,7 @@ func (s *Server) tasksListHandler(c *fiber.Ctx) error {
 		// вызываем метод логики
 		res, err := s.service.GetTaskList()
 		if err != nil {
-			return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
+			return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 				Error: err.Error(),
 			})
 		}
@@ -66,7 +66,7 @@ func (s *Server) taskGetHandler(c *fiber.Ctx) error {
 	// вызываем метод логики
 	res, err := s.service.GetById(taskId)
 	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
+		return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 			Error: err.Error(),
 		})
 	}
@@ -106,7 +106,7 @@ func (s *Server) taskCreateHandler(c *fiber.Ctx) error {
 	// вызываем метод логики
 	res, err := s.service.AddTask(req)
 	if err != nil || res == 0 {
-		return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
+		return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 			Error: err.Error(),
 		})
 	}
@@ -177,7 +177,7 @@ func (s *Server) taskUpdateHandler(c *fiber.Ctx) error {
 	// вызываем метод логики
 	err = s.service.UpdateTask(req, false)
 	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
+		return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 			Error: err.Error(),
 		})
 	}
@@ -207,7 +207,7 @@ func (s *Server) taskDeleteHandler(c *fiber.Ctx) error {
 	// вызываем метод логики
 	err := s.service.DeleteTask(taskId)
 	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON(models.ErrorResult{
+		return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 			Error: err.Error(),
 		})
 	}
@@ -230,7 +230,7 @@ func (s *Server) nextDateHandler(c *fiber.Ctx) error {
 
 	nextDate, err := s.service.NextDate(now, date, repeat, false)
 	if err != nil {
-		return c.Status(http.StatusUnprocessableEntity).JSON(models.ErrorResult{
+		return c.Status(http.StatusInternalServerError).JSON(models.ErrorResult{
 			Error: err.Error(),
 		})
 	}
