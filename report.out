@@ -1,0 +1,27 @@
+?   	github.com/ElenaMikhailovskaya/go_final_project/internal/models	[no test files]
+	github.com/ElenaMikhailovskaya/go_final_project/internal/interfaces/database		coverage: 0.0% of statements
+	github.com/ElenaMikhailovskaya/go_final_project/internal/service		coverage: 0.0% of statements
+	github.com/ElenaMikhailovskaya/go_final_project/cmd/app		coverage: 0.0% of statements
+	github.com/ElenaMikhailovskaya/go_final_project/internal/transport/http_transport		coverage: 0.0% of statements
+	github.com/ElenaMikhailovskaya/go_final_project/internal/app		coverage: 0.0% of statements
+=== RUN   TestAddTask
+--- PASS: TestAddTask (0.01s)
+=== RUN   TestApp
+--- PASS: TestApp (0.01s)
+=== RUN   TestDB
+--- PASS: TestDB (0.00s)
+=== RUN   TestNextDate
+--- PASS: TestNextDate (0.00s)
+=== RUN   TestTask
+--- PASS: TestTask (0.00s)
+=== RUN   TestEditTask
+--- PASS: TestEditTask (0.00s)
+=== RUN   TestDone
+--- PASS: TestDone (0.01s)
+=== RUN   TestDelTask
+--- PASS: TestDelTask (0.00s)
+=== RUN   TestTasks
+--- PASS: TestTasks (0.00s)
+PASS
+coverage: [no statements]
+ok  	github.com/ElenaMikhailovskaya/go_final_project/tests	0.275s	coverage: [no statements]

@@ -107,7 +107,6 @@ func TestAddTask(t *testing.T) {
 	}
 
 	now := time.Now()
-
 	check := func() {
 		for _, v := range tbl {
 			today := v.date == "today"
